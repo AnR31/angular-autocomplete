@@ -13,7 +13,7 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class AutocompleteAutoActiveFirstOptionExample implements OnInit {
   myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  options: string[] = ['',];
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
@@ -27,6 +27,11 @@ export class AutocompleteAutoActiveFirstOptionExample implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  onKeyEnter(event: string) {
+    this.options.push(event)
+    this.myControl.setValue('');
   }
 }
 
