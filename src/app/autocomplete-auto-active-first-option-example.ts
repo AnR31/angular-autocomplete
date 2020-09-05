@@ -1,31 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { Component, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
 
 /**
  * @title Highlight the first autocomplete option
  */
 @Component({
-  selector: 'autocomplete-auto-active-first-option-example',
-  templateUrl: 'autocomplete-auto-active-first-option-example.html',
-  styleUrls: ['autocomplete-auto-active-first-option-example.css'],
+  selector: "autocomplete-auto-active-first-option-example",
+  templateUrl: "autocomplete-auto-active-first-option-example.html",
+  styleUrls: ["autocomplete-auto-active-first-option-example.css"]
 })
 export class AutocompleteAutoActiveFirstOptionExample implements OnInit {
   constructor() {
-    if (JSON.stringify(localStorage.getItem('names')) == 'null') {
-      localStorage.clear;
-      this.options = [''];
-    } else {console.log('omg not null')}
   }
   myControl = new FormControl();
-  options: string[] = JSON.stringify(localStorage.getItem('names')).split(' ');
-  //options: string[] = ['',];
+  options: string[] = [''];
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
+      startWith(""),
       map(value => this._filter(value))
     );
   }
@@ -33,15 +28,17 @@ export class AutocompleteAutoActiveFirstOptionExample implements OnInit {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    return this.options.filter(
+      option => option.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   onKeyEnter(event: string) {
-    this.options.push(event + ' ')
-    this.myControl.setValue('');
+    this.options.push(event);
+    localStorage.setItem('names', JSON.stringify(this.options));
+    this.myControl.setValue("");
   }
 }
-
 
 /**  Copyright 2020 Google LLC. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
