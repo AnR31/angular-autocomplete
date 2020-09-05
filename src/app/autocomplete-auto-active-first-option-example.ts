@@ -12,8 +12,15 @@ import {map, startWith} from 'rxjs/operators';
   styleUrls: ['autocomplete-auto-active-first-option-example.css'],
 })
 export class AutocompleteAutoActiveFirstOptionExample implements OnInit {
+  constructor() {
+    if (JSON.stringify(localStorage.getItem('names')) == 'null') {
+      localStorage.clear;
+      this.options = [''];
+    } else {console.log('omg not null')}
+  }
   myControl = new FormControl();
-  options: string[] = ['',];
+  options: string[] = JSON.stringify(localStorage.getItem('names')).split(' ');
+  //options: string[] = ['',];
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
@@ -30,7 +37,7 @@ export class AutocompleteAutoActiveFirstOptionExample implements OnInit {
   }
 
   onKeyEnter(event: string) {
-    this.options.push(event)
+    this.options.push(event + ' ')
     this.myControl.setValue('');
   }
 }
